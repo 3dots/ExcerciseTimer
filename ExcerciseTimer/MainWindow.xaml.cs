@@ -24,5 +24,13 @@ namespace ExcerciseTimer
         {
             InitializeComponent();
         }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+                this.Hide();
+
+            base.OnStateChanged(e);
+        }
     }
 }
