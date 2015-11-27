@@ -31,6 +31,8 @@ namespace ExcerciseTimer
              
             MainWindow main = new MainWindow();
 
+            
+
             TrayIconUnmanaged = new System.Windows.Forms.NotifyIcon();
             TrayIconUnmanaged.Icon = ExcerciseTimer.Properties.Resources.AppIcon;
             TrayIconUnmanaged.Visible = true;

@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExcerciseTimer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="ExcerciseTimer" Height="350" Width="525">
     <Grid>
-        <TextBlock>Apple</TextBlock>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="16*"/>
+                <RowDefinition Height="21*"/>
+                <RowDefinition Height="16*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="155*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="260*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontSize="20" Width="166">
+                Overall Parameters
+            </TextBlock>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right" FontSize="{Binding Path=OverallParameterFormat}" Width="121">
+                Overall Period:
+                <LineBreak/>
+                (excercise included)
+            </TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" FontSize="{StaticResource OverallParameterFont}" Width="116">
+                Excercise Duration:
+            </TextBlock>
+
+        </Grid>
+
     </Grid>
 </Window>
