@@ -40,11 +40,15 @@ namespace ExcerciseTimer
 
             SharedModel SM = new SharedModel(ElapsedStopwatch);
 
+            ViewModel_MainWindow VM_MainWindow = new ViewModel_MainWindow();
+            VM_MainWindow.Initialize(App.Current.Dispatcher, SM);
+
             ViewModel_OverallParameters VM_OverallParameters = new ViewModel_OverallParameters();
             VM_OverallParameters.Initialize(App.Current.Dispatcher, SM);
 
 
-            main.DataContext = new { OverallParameters = VM_OverallParameters };
+            main.DataContext = new {    OverallParameters = VM_OverallParameters,
+                                        MainWindow = VM_MainWindow };
 
 
             main.Show();

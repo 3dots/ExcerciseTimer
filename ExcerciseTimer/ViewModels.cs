@@ -28,7 +28,6 @@ namespace ExcerciseTimer
 
             OverallPeriod = SM.OverallPeriod.ToString("hh\\:mm\\:ss");
             ExcercisePeriod = SM.ExcercisePeriod.ToString("hh\\:mm\\:ss");
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,6 +38,7 @@ namespace ExcerciseTimer
                 this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
 
+       
         bool EntryMode { get; set; } = false;
         bool ParametersAreValid { get; set; } = true;
         public ICommand ToggleEntryDisplay { get; private set; }
@@ -270,6 +270,54 @@ namespace ExcerciseTimer
         public void Execute(object parameter)
         {
             this.execute(parameter);
+        }
+    }
+
+    class ViewModel_MainWindow : INotifyPropertyChanged
+    {
+        System.Windows.Threading.Dispatcher Dispatcher { get; set; }
+
+        SharedModel SM { get; set; }
+
+        public void Initialize(System.Windows.Threading.Dispatcher d, SharedModel sm)
+        {
+            Dispatcher = d;
+            SM = sm;
+
+
+            //20 title 14 normal default.
+            FontSize = "14";
+            TitleFontSize = "20";
+        }
+
+        private string fontSize = "11";
+        public string FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                fontSize = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string titleFontSize = "11";
+        public string TitleFontSize
+        {
+            get { return titleFontSize; }
+            set
+            {
+                titleFontSize = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null)
+                this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
     }
 }

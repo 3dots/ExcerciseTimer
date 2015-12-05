@@ -28,54 +28,54 @@
                 <ColumnDefinition Width="Auto" MinWidth="100"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontSize="{Binding Path=OverallParameters.TitleFontSize}" Width="166">
+            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontSize="{Binding Path=MainWindow.TitleFontSize}" Width="166">
                 Overall Parameters
             </TextBlock>
 
-            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right" FontSize="{Binding Path=OverallParameters.FontSize}" Width="121">
+            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right" FontSize="{Binding Path=MainWindow.FontSize}" Width="121">
                 Overall Period:
                 <LineBreak/>
                 (excercise included)
             </TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" FontSize="{Binding Path=OverallParameters.FontSize}" Width="116">
+            <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" FontSize="{Binding Path=MainWindow.FontSize}" Width="116">
                 Excercise Duration:
             </TextBlock>
 
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Visibility="{Binding Path=OverallParameters.DisplayVisibility}">
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.OverallPeriod}" Margin="10,0,0,0"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.Format}"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                <TextBox FontSize="{Binding Path=OverallParameters.FontSize}" VerticalAlignment="Top"
+                <TextBox FontSize="{Binding Path=MainWindow.FontSize}" VerticalAlignment="Top"
                          Text="{Binding Path=OverallParameters.OverallPeriod}" Margin="10,0,0,0"
                          Visibility="{Binding Path=OverallParameters.EntryVisibility}"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.Format}"
                            Visibility="{Binding Path=OverallParameters.EntryVisibility}"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.ErrorOverallPeriod}"
                            Visibility="{Binding Path=OverallParameters.ErrorOverallPeriodVisibility}"/>
             </StackPanel>
 
 
             <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Visibility="{Binding Path=OverallParameters.DisplayVisibility}">
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.ExcercisePeriod}" Margin="10,0,0,0"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.Format}"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
-                <TextBox FontSize="{Binding Path=OverallParameters.FontSize}" VerticalAlignment="Top"
+                <TextBox FontSize="{Binding Path=MainWindow.FontSize}" VerticalAlignment="Top"
                          Text="{Binding Path=OverallParameters.ExcercisePeriod}" Margin="10,0,0,0"
                          Visibility="{Binding Path=OverallParameters.EntryVisibility}"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.Format}"
                            Visibility="{Binding Path=OverallParameters.EntryVisibility}"/>
-                <TextBlock FontSize="{Binding Path=OverallParameters.FontSize}"
+                <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.ErrorExcercisePeriod}"
                            Visibility="{Binding Path=OverallParameters.ErrorExcercisePeriodVisibility}"/>
             </StackPanel>
