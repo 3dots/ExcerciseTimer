@@ -249,30 +249,6 @@ namespace ExcerciseTimer
         }
     }
 
-    public class RelayCommand : ICommand
-    {
-        private Action<object> execute;
-        private Func<object, bool> canExecute;
-
-        public event EventHandler CanExecuteChanged;
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            this.execute = execute;
-            this.canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return this.canExecute == null || this.canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            this.execute(parameter);
-        }
-    }
-
     class ViewModel_MainWindow : INotifyPropertyChanged
     {
         System.Windows.Threading.Dispatcher Dispatcher { get; set; }
@@ -288,6 +264,14 @@ namespace ExcerciseTimer
             //20 title 14 normal default.
             FontSize = "14";
             TitleFontSize = "20";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null)
+                this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
 
         private string fontSize = "11";
@@ -312,6 +296,30 @@ namespace ExcerciseTimer
             }
         }
 
+
+    }
+
+    class ViewModel_App : INotifyPropertyChanged
+    {
+        System.Windows.Threading.Dispatcher Dispatcher { get; set; }
+
+        SharedModel SM { get; set; }
+
+        App App { get; set; }
+
+        public ViewModel_App()
+        {
+            Start = new RelayCommand(StartMainApplication, o => true);
+        }
+        
+        public void Initialize(System.Windows.Threading.Dispatcher d, SharedModel sm, App app)
+        {
+            Dispatcher = d;
+            SM = sm;
+
+            App = app;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -319,5 +327,90 @@ namespace ExcerciseTimer
             if (handler != null)
                 this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
+
+        public ICommand Start { get; private set; }
+        private void StartMainApplication(object o)
+        {
+            StartVisibility = "Collapsed";
+            MainModeVisibility = "Visible";
+
+            App.StartMainApplication();
+        }
+
+        private string startVisibility = "Visible";
+        public string StartVisibility
+        {
+            get { return startVisibility; }
+            set
+            {
+                startVisibility = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string mainModeVisibility = "Collapsed";
+        public string MainModeVisibility
+        {
+            get { return mainModeVisibility; }
+            set
+            {
+                mainModeVisibility = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string sessionTime = "00:00:00";
+        public string SessionTime
+        {
+            get { return sessionTime; }
+            set
+            {
+                sessionTime = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string timeOwed = "00:00:00";
+        public string TimeOwed
+        {
+            get { return timeOwed; }
+            set
+            {
+                timeOwed = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public void UpdateUI()
+        {
+            SessionTime = SM.ActiveSessionTime.ToString("hh\\:mm\\:ss");
+            TimeOwed = SM.TimeOwed.ToString("hh\\:mm\\:ss");
+        }
     }
+
+        public class RelayCommand : ICommand
+    {
+        private Action<object> execute;
+        private Func<object, bool> canExecute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        {
+            this.execute = execute;
+            this.canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return this.canExecute == null || this.canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            this.execute(parameter);
+        }
+    }
+
+    
 }
