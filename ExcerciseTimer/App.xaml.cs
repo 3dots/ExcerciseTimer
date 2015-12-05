@@ -19,6 +19,7 @@ namespace ExcerciseTimer
         System.Windows.Forms.NotifyIcon TrayIconUnmanaged { get; set; }
 
 
+        Stopwatch_ThreadSafe ElapsedStopwatch = new Stopwatch_ThreadSafe();
 
         /// <summary>
         /// Main application method. Called at some point after App was constructed in the generated static Main() method.
@@ -31,13 +32,19 @@ namespace ExcerciseTimer
              
             MainWindow main = new MainWindow();
 
-            
-
             TrayIconUnmanaged = new System.Windows.Forms.NotifyIcon();
             TrayIconUnmanaged.Icon = ExcerciseTimer.Properties.Resources.AppIcon;
             TrayIconUnmanaged.Visible = true;
             TrayIconUnmanaged.DoubleClick += (s, args) => { main.Show(); main.WindowState = WindowState.Normal; };
 
+
+            SharedModel SM = new SharedModel(ElapsedStopwatch);
+
+            ViewModel_OverallParameters VM_OverallParameters = new ViewModel_OverallParameters();
+            VM_OverallParameters.Initialize(App.Current.Dispatcher, SM);
+
+
+            main.DataContext = new { OverallParameters = VM_OverallParameters };
 
 
             main.Show();
@@ -84,7 +91,7 @@ namespace ExcerciseTimer
 
     class Stopwatch_ThreadSafe
     {
-        private Stopwatch s;
+        Stopwatch s;
 
         public Stopwatch_ThreadSafe() { s = new Stopwatch(); }
 
