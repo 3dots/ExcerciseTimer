@@ -28,6 +28,9 @@ namespace ExcerciseTimer
 
             OverallPeriod = SM.OverallPeriod.ToString("hh\\:mm\\:ss");
             ExcercisePeriod = SM.ExcercisePeriod.ToString("hh\\:mm\\:ss");
+            EnteredOverallPeriod = SM.OverallPeriod;
+            EnteredExcercisePeriod = SM.ExcercisePeriod;
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,6 +60,10 @@ namespace ExcerciseTimer
                     ButtonContent = "Change Parameters";
 
                     EntryMode = false;
+
+                    //if enter values Are proper, update them here.
+                    SM.UpdateOverallParameters(EnteredOverallPeriod, EnteredExcercisePeriod);
+
                 }
                 else
                 {
@@ -71,6 +78,10 @@ namespace ExcerciseTimer
             else
                 ParametersAreValid = true;
         }
+
+        TimeSpan EnteredOverallPeriod;
+        TimeSpan EnteredExcercisePeriod;
+        
 
         Regex rgxFormat = new Regex(@"^\d{2}:\d{2}:\d{2}$");
 
@@ -110,7 +121,8 @@ namespace ExcerciseTimer
 
                         NotifyPropertyChanged();
 
-                        SM.OverallPeriod = EnteredSpan;
+                        EnteredOverallPeriod = EnteredSpan;
+                        
 
                     }
                 }
@@ -176,7 +188,8 @@ namespace ExcerciseTimer
 
                         NotifyPropertyChanged();
 
-                        SM.ExcercisePeriod = EnteredSpan;
+                        EnteredExcercisePeriod = EnteredSpan;
+                         
 
                     }
                 }

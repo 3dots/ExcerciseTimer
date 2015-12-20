@@ -72,7 +72,7 @@ namespace ExcerciseTimer
                                         OverallParameters = VM_OverallParameters,
                                         App = VM_App};
 
-
+            //Every second timer hooked up to a method. Not starting it yet.
             lock (EverySecondTimer) { EverySecondTimer.Elapsed += EverySecondTimer_Elapsed; }
 
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SessionSwitchOccured);
@@ -86,21 +86,27 @@ namespace ExcerciseTimer
         {
             ElapsedStopwatch.Start();
             lock (EverySecondTimer) { EverySecondTimer.Enabled = true; }
-
-            ProgramState = ProgramStates.PeriodStarted;
+            lock (ProgramStateLock) { ProgramState = ProgramStates.PeriodStarted; }
+            
         }
 
         private void EverySecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+
             lock(EverySecondTimer)
             {
                 if(EverySecondTimer.Enabled)
                 {
                     SM.ActiveSessionTime = ElapsedStopwatch.Elapsed;
 
-                    SM.TimeOwed =   SM.TimeOwedPrevious + 
-                                    new TimeSpan((long)(    (((Decimal) SM.ExcercisePeriod.Ticks) / ((Decimal) SM.OverallPeriod.Ticks)) * 
-                                                            (Decimal) ElapsedStopwatch.Elapsed.Ticks   ));
+                    TimeSpan TimeOwedIncrement;
+                    lock (SM.ParameterLock)
+                    {
+                        TimeOwedIncrement = new TimeSpan((long)((((Decimal)SM.ExcercisePeriod.Ticks) / ((Decimal)SM.OverallPeriod.Ticks)) *
+                                                                            ((Decimal)ElapsedStopwatch.Elapsed.Ticks))); 
+                    }
+
+                    SM.TimeOwed = SM.TimeOwedPrevious + TimeOwedIncrement;
 
                     VM_App.UpdateUI();
                 }
@@ -148,19 +154,18 @@ namespace ExcerciseTimer
     {
 
         /// <summary>
-        /// Default Overall Paramaters.
-        /// This gets cast to int32 in milliseconds. 
-        /// DO NOT SET this to 590 hours or more!
+        /// Default Overall Paramaters.     
         /// </summary>
         readonly TimeSpan OverallPeriodDefault = new TimeSpan(hours: 0, minutes: 0, seconds: 10);
         readonly TimeSpan ExcercisePeriodDefault = new TimeSpan(hours: 0, minutes: 0, seconds: 5);
 
         //TO DO: insert setter control.
+        public object ParameterLock = new object();
         public TimeSpan OverallPeriod { get; set; }
         public TimeSpan ExcercisePeriod { get; set; }
 
 
-        Stopwatch_ThreadSafe ElapsedStopwatch;
+        //Stopwatch_ThreadSafe ElapsedStopwatch;
         //public TimeSpan ActiveSessionElapsed() { return ElapsedStopwatch.Elapsed; }
        
         public TimeSpan ActiveSessionTime { get; set; } = new TimeSpan();
@@ -172,11 +177,25 @@ namespace ExcerciseTimer
 
         public SharedModel(Stopwatch_ThreadSafe elapsedStopwatch)
         {
-            this.OverallPeriod = OverallPeriodDefault;
-            this.ExcercisePeriod = ExcercisePeriodDefault;
+            lock(ParameterLock)
+            {
+                this.OverallPeriod = OverallPeriodDefault;
+                this.ExcercisePeriod = ExcercisePeriodDefault;
+            }
+            
 
-            ElapsedStopwatch = elapsedStopwatch;
+            //ElapsedStopwatch = elapsedStopwatch;
         }
+
+        public void UpdateOverallParameters(TimeSpan EnteredOverallPeriod, TimeSpan EneteredExcercisePeriod)
+        {
+            lock (ParameterLock)
+            {
+                this.OverallPeriod = EnteredOverallPeriod;
+                this.ExcercisePeriod = EneteredExcercisePeriod;
+            }
+        }
+
 
     }
 
