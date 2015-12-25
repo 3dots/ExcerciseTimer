@@ -105,7 +105,7 @@ namespace ExcerciseTimer
 
                     TimeSpan EnteredSpan = new TimeSpan(int.Parse(input[0]), int.Parse(input[1]), int.Parse(input[2]));
 
-                    if (EnteredSpan <= SM.ExcercisePeriod)
+                    if (EnteredSpan <= EnteredExcercisePeriod)
                     {
                         ParametersAreValid = false;
                         ErrorOverallPeriod = " Must be greater than Excercise Period.";
@@ -171,7 +171,7 @@ namespace ExcerciseTimer
 
                     TimeSpan EnteredSpan = new TimeSpan(int.Parse(input[0]), int.Parse(input[1]), int.Parse(input[2]));
 
-                    if (EnteredSpan >= SM.OverallPeriod)
+                    if (EnteredSpan >= EnteredOverallPeriod)
                     {
                         ParametersAreValid = false;
                         ErrorExcercisePeriod = "  Must be less than Overall Period.";
