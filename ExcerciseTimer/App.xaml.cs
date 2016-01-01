@@ -53,6 +53,8 @@ namespace ExcerciseTimer
              
             MainWindow main = new MainWindow();
 
+            MainWindow = main;
+
             TrayIconUnmanaged = new System.Windows.Forms.NotifyIcon();
             TrayIconUnmanaged.Icon = ExcerciseTimer.Properties.Resources.AppIcon;
             TrayIconUnmanaged.Visible = true;
@@ -127,7 +129,11 @@ namespace ExcerciseTimer
                         VM_App.UpdateUI();
 
                         if (ProgramState == ProgramStates.TimeToExcercise)
-                            App.Current.Dispatcher.Invoke(new Action(() => { FlashHelper.FlashApplicationWindow(); }));
+                        {
+                            App.Current.Dispatcher.Invoke(new Action(() => { FlashHelper.FlashApplicationWindow(); MainWindow.Show(); }));
+                            
+                        }
+                            
 
                     } 
                 }
