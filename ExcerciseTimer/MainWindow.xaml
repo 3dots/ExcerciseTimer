@@ -29,6 +29,7 @@
                 <ColumnDefinition Width="Auto" MinWidth="100"/>
             </Grid.ColumnDefinitions>
 
+            <!-- When Path is at the beginning of binding, it can be omitted -->
             <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontSize="{Binding Path=MainWindow.TitleFontSize}" Width="166">
                 Overall Parameters
             </TextBlock>

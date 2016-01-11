@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ExcerciseTimer
@@ -227,7 +228,15 @@ namespace ExcerciseTimer
         }
 
 
-        private string displayVisibility = "Visible";
+    // I would prefer to use Enums instead strings in this case
+    // private Visibility displayVisibility = Visibility.Visible;
+    //
+    // You are notifying about changes even if there no changes. In small project it is not big issue, but in complex view model with a lot of recalculation it can be problem 
+    //
+    // Each control can show validation errors with nice red border and tool-tip with error description. To get this working you have to implement at least one validation interface (INotifyDataErrorInfo or ... )
+    //
+    // If project contains a lot of view models, I would implement base class for MVVM and validation to simplify view model code
+    private string displayVisibility = "Visible";
         public string DisplayVisibility
         {
             get { return displayVisibility; }
