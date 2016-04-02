@@ -220,8 +220,8 @@ namespace ExcerciseTimer
         /// <summary>
         /// Default Overall Paramaters.     
         /// </summary>
-        readonly TimeSpan OverallPeriodDefault = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
-        readonly TimeSpan ExcercisePeriodDefault = new TimeSpan(hours: 0, minutes: 0, seconds: 5);
+        readonly TimeSpan OverallPeriodDefault = new TimeSpan(hours: 1, minutes: 0, seconds: 0);
+        readonly TimeSpan ExcercisePeriodDefault = new TimeSpan(hours: 0, minutes: 5, seconds: 0);
 
         //TO DO: insert setter control.
         public object ParameterLock = new object();
