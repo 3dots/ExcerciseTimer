@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ExcerciseTimer
 {
+    public static class ViewModelStatics
+    {
+        public static string TimeStringFormat => "hh\\:mm\\:ss";
+    }
+
     class ViewModel_OverallParameters : INotifyPropertyChanged
     {
-        System.Windows.Threading.Dispatcher Dispatcher { get; set; }
+        Dispatcher Dispatcher { get; set; }
 
         SharedModel SM { get; set; }
 
@@ -22,16 +23,15 @@ namespace ExcerciseTimer
             ToggleEntryDisplay = new RelayCommand(ToggleEntryDisplayMethod, o => true);
         }
 
-        public void Initialize(System.Windows.Threading.Dispatcher d, SharedModel sm)
+        public void Initialize(Dispatcher d, SharedModel sm)
         {
             Dispatcher = d;
             SM = sm;
 
-            OverallPeriod = SM.OverallPeriod.ToString("hh\\:mm\\:ss");
-            ExcercisePeriod = SM.ExcercisePeriod.ToString("hh\\:mm\\:ss");
+            OverallPeriod = SM.OverallPeriod.ToString(ViewModelStatics.TimeStringFormat);
+            ExcercisePeriod = SM.ExcercisePeriod.ToString(ViewModelStatics.TimeStringFormat);
             EnteredOverallPeriod = SM.OverallPeriod;
-            EnteredExcercisePeriod = SM.ExcercisePeriod;
-            
+            EnteredExcercisePeriod = SM.ExcercisePeriod;           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,11 +39,11 @@ namespace ExcerciseTimer
         {
             var handler = this.PropertyChanged;
             if (handler != null)
-                this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
+                Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
 
        
-        bool EntryMode { get; set; } = false;
+        bool EntryMode { get; set; }
         bool ParametersAreValid { get; set; } = true;
         public ICommand ToggleEntryDisplay { get; private set; }
         private void ToggleEntryDisplayMethod(object o)
@@ -64,7 +64,6 @@ namespace ExcerciseTimer
 
                     //if enter values Are proper, update them here.
                     SM.UpdateOverallParameters(EnteredOverallPeriod, EnteredExcercisePeriod);
-
                 }
                 else
                 {
@@ -81,9 +80,7 @@ namespace ExcerciseTimer
         }
 
         TimeSpan EnteredOverallPeriod;
-        TimeSpan EnteredExcercisePeriod;
-        
-
+        TimeSpan EnteredExcercisePeriod;       
         Regex rgxFormat = new Regex(@"^\d{2}:\d{2}:\d{2}$");
 
         private string overallPeriod = "Not Initialized";
@@ -122,9 +119,7 @@ namespace ExcerciseTimer
 
                         NotifyPropertyChanged();
 
-                        EnteredOverallPeriod = EnteredSpan;
-                        
-
+                        EnteredOverallPeriod = EnteredSpan;                      
                     }
                 }
             }
@@ -189,9 +184,7 @@ namespace ExcerciseTimer
 
                         NotifyPropertyChanged();
 
-                        EnteredExcercisePeriod = EnteredSpan;
-                         
-
+                        EnteredExcercisePeriod = EnteredSpan;                         
                     }
                 }
             }
@@ -227,16 +220,16 @@ namespace ExcerciseTimer
             get { return format; }
         }
 
-
-    // I would prefer to use Enums instead strings in this case
-    // private Visibility displayVisibility = Visibility.Visible;
-    //
-    // You are notifying about changes even if there no changes. In small project it is not big issue, but in complex view model with a lot of recalculation it can be problem 
-    //
-    // Each control can show validation errors with nice red border and tool-tip with error description. To get this working you have to implement at least one validation interface (INotifyDataErrorInfo or ... )
-    //
-    // If project contains a lot of view models, I would implement base class for MVVM and validation to simplify view model code
-    private string displayVisibility = "Visible";
+        //TODO: Address
+        // I would prefer to use Enums instead strings in this case
+        // private Visibility displayVisibility = Visibility.Visible;
+        //
+        // You are notifying about changes even if there no changes. In small project it is not big issue, but in complex view model with a lot of recalculation it can be problem 
+        //
+        // Each control can show validation errors with nice red border and tool-tip with error description. To get this working you have to implement at least one validation interface (INotifyDataErrorInfo or ... )
+        //
+        // If project contains a lot of view models, I would implement base class for MVVM and validation to simplify view model code
+        private string displayVisibility = "Visible";
         public string DisplayVisibility
         {
             get { return displayVisibility; }
@@ -273,15 +266,14 @@ namespace ExcerciseTimer
 
     class ViewModel_MainWindow : INotifyPropertyChanged
     {
-        System.Windows.Threading.Dispatcher Dispatcher { get; set; }
+        Dispatcher Dispatcher { get; set; }
 
         SharedModel SM { get; set; }
 
-        public void Initialize(System.Windows.Threading.Dispatcher d, SharedModel sm)
+        public void Initialize(Dispatcher d, SharedModel sm)
         {
             Dispatcher = d;
             SM = sm;
-
 
             //20 title 14 normal default.
             FontSize = "14";
@@ -293,7 +285,7 @@ namespace ExcerciseTimer
         {
             var handler = this.PropertyChanged;
             if (handler != null)
-                this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
+                Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
 
         private string fontSize = "11";
@@ -323,10 +315,9 @@ namespace ExcerciseTimer
 
     class ViewModel_App : INotifyPropertyChanged
     {
-        System.Windows.Threading.Dispatcher Dispatcher { get; set; }
+        Dispatcher Dispatcher { get; set; }
 
         SharedModel SM { get; set; }
-
         App App { get; set; }
 
         public ViewModel_App()
@@ -334,7 +325,7 @@ namespace ExcerciseTimer
             Start = new RelayCommand(StartMainApplication, o => true);
         }
         
-        public void Initialize(System.Windows.Threading.Dispatcher d, SharedModel sm, App app)
+        public void Initialize(Dispatcher d, SharedModel sm, App app)
         {
             Dispatcher = d;
             SM = sm;
@@ -347,7 +338,7 @@ namespace ExcerciseTimer
         {
             var handler = this.PropertyChanged;
             if (handler != null)
-                this.Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
+                Dispatcher.Invoke(new Action(() => { handler(this, new PropertyChangedEventArgs(propertyName)); }));
         }
 
         public ICommand Start { get; private set; }
@@ -405,8 +396,8 @@ namespace ExcerciseTimer
 
         public void UpdateUI()
         {
-            SessionTime = SM.ActiveSessionTime.ToString("hh\\:mm\\:ss");
-            TimeOwed = SM.TimeOwed.ToString("hh\\:mm\\:ss");
+            SessionTime = SM.ActiveSessionTime.ToString(ViewModelStatics.TimeStringFormat);
+            TimeOwed = SM.TimeOwed.ToString(ViewModelStatics.TimeStringFormat);
         }
     }
 
@@ -425,12 +416,12 @@ namespace ExcerciseTimer
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute == null || this.canExecute(parameter);
+            return canExecute == null || canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            execute(parameter);
         }
     }
 

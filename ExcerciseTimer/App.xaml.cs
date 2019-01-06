@@ -1,12 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -16,18 +11,14 @@ namespace ExcerciseTimer
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : System.Windows.Application
-    {        
-        System.Windows.Forms.NotifyIcon TrayIconUnmanaged { get; set; }
-
-        FlashWindowHelper FlashHelper { get; set; }
-
+    {
         SharedModel SM;
-
         ViewModel_App VM_App;
 
-
+        NotifyIcon TrayIconUnmanaged { get; set; }
+        FlashWindowHelper FlashHelper { get; set; }
+      
         Stopwatch_ThreadSafe ElapsedStopwatch = new Stopwatch_ThreadSafe();
-
         System.Timers.Timer EverySecondTimer = new System.Timers.Timer(1000);
 
 
@@ -49,43 +40,40 @@ namespace ExcerciseTimer
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void ApplicationEntryPoint(object sender, StartupEventArgs e)
-        { 
-             
-            MainWindow main = new MainWindow();
-
-            MainWindow = main;
-
-            TrayIconUnmanaged = new System.Windows.Forms.NotifyIcon();
-            TrayIconUnmanaged.Icon = ExcerciseTimer.Properties.Resources.AppIcon;
-            TrayIconUnmanaged.Visible = true;
-            TrayIconUnmanaged.DoubleClick += (s, args) => { main.Show(); main.WindowState = WindowState.Normal; };
-
-            FlashHelper = new FlashWindowHelper(System.Windows.Application.Current);
-
+        {
             SM = new SharedModel(ElapsedStopwatch);
 
+            MainWindow = new MainWindow();
+            FlashHelper = new FlashWindowHelper(Current);
+                   
+            TrayIconUnmanaged = new NotifyIcon();
+            TrayIconUnmanaged.Icon = ExcerciseTimer.Properties.Resources.AppIcon;
+            TrayIconUnmanaged.Visible = true;
+            TrayIconUnmanaged.DoubleClick += (s, args) => { MainWindow.Show(); MainWindow.WindowState = WindowState.Normal; };
+                        
             ViewModel_MainWindow VM_MainWindow = new ViewModel_MainWindow();
-            VM_MainWindow.Initialize(App.Current.Dispatcher, SM);
+            VM_MainWindow.Initialize(Current.Dispatcher, SM);
 
             ViewModel_OverallParameters VM_OverallParameters = new ViewModel_OverallParameters();
-            VM_OverallParameters.Initialize(App.Current.Dispatcher, SM);
+            VM_OverallParameters.Initialize(Current.Dispatcher, SM);
 
             VM_App = new ViewModel_App();
-            VM_App.Initialize(App.Current.Dispatcher, SM, this);
+            VM_App.Initialize(Current.Dispatcher, SM, this);
 
-            main.DataContext = new {    MainWindow = VM_MainWindow,
-                                        OverallParameters = VM_OverallParameters,
-                                        App = VM_App};
+            MainWindow.DataContext = new {
+                App = VM_App,
+                MainWindow = VM_MainWindow,
+                OverallParameters = VM_OverallParameters,                
+            };
 
             //Every second timer hooked up to a method. Not starting it yet.
             lock (EverySecondTimer) { EverySecondTimer.Elapsed += EverySecondTimer_Elapsed; }
 
-            Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SessionSwitchOccured);
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SessionSwitchOccured);
 
             lock (ProgramStateLock) { ProgramState = ProgramStates.WaitingForUserStart; }
 
-            main.Show();
-            
+            MainWindow.Show();           
         }
 
         public void StartMainApplication()

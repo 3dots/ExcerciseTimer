@@ -6,9 +6,7 @@
         xmlns:local="clr-namespace:ExcerciseTimer"
         mc:Ignorable="d"
         Title="ExcerciseTimer" Height="350" Width="525">
-    
     <Grid>
-        
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -16,13 +14,11 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="16*"/>
                 <RowDefinition Height="21*"/>
                 <RowDefinition Height="16*"/>
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="190"/>
                 <ColumnDefinition Width="Auto"/>
@@ -39,11 +35,11 @@
                 <LineBreak/>
                 (excercise included)
             </TextBlock>
+
             <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" FontSize="{Binding Path=MainWindow.FontSize}" Width="116">
                 Excercise Duration:
             </TextBlock>
 
-            
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Visibility="{Binding Path=OverallParameters.DisplayVisibility}">
                 <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
                            Text="{Binding Path=OverallParameters.OverallPeriod}" Margin="10,0,0,0"/>
@@ -62,7 +58,6 @@
                            Text="{Binding Path=OverallParameters.ErrorOverallPeriod}"
                            Visibility="{Binding Path=OverallParameters.ErrorOverallPeriodVisibility}"/>
             </StackPanel>
-
 
             <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Visibility="{Binding Path=OverallParameters.DisplayVisibility}">
                 <TextBlock FontSize="{Binding Path=MainWindow.FontSize}"
@@ -83,7 +78,6 @@
                            Visibility="{Binding Path=OverallParameters.ErrorExcercisePeriodVisibility}"/>
             </StackPanel>
 
-
             <Button Grid.Column="2" Grid.RowSpan="3"                    
 		            HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -94,12 +88,10 @@
         </Grid>
 
         <Grid Grid.Row="1">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="190"/>
                 <ColumnDefinition/>
@@ -114,7 +106,6 @@
                        Visibility="{Binding Path=App.MainModeVisibility}"
                        Text="Time owed: ">
             </TextBlock>
-
 
             <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{Binding Path=MainWindow.FontSize}"
                        Visibility="{Binding Path=App.MainModeVisibility}"
@@ -134,8 +125,5 @@
                     CommandParameter="" Command="{Binding Path=App.Start}"/>
 
         </Grid>
-
     </Grid>
-
-
 </Window>
